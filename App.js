@@ -131,4 +131,25 @@ const Score = ({ children }) => (
   </Text>
 );
 
-export default withAuthenticator(App, { includeGreetings: true });
+export default withAuthenticator(App, {
+  includeGreetings: true,
+  signUpConfig: {
+    signUpFields: [
+      {
+        label: 'Username',
+        key: 'username',
+        required: true,
+        placeholder: 'Username',
+        displayOrder: 1,
+      },
+      {
+        label: 'Password',
+        key: 'password',
+        required: true,
+        placeholder: 'Password',
+        type: 'password',
+        displayOrder: 2,
+      },
+    ],
+  },
+});
