@@ -19,6 +19,7 @@ import { withAuthenticator } from 'aws-amplify-react';
 
 import { listUsers } from './src/graphql/queries';
 import { createUser, deleteUser } from './src/graphql/mutations';
+import { onCreateUser } from './src/graphql/subscriptions';
 
 class App extends React.Component {
   state = {
@@ -32,6 +33,15 @@ class App extends React.Component {
     this.setState({ userName: currentUser.username });
     const leaderboard = await API.graphql(graphqlOperation(listUsers));
     this.setState({ leaderboard: leaderboard.data.listUsers.items });
+    const subscription = await API.graphql(graphqlOperation(onCreateUser)).subscribe({
+      next: ({ value }) =>
+        this.setState(state => ({ leaderboard: [...state.leaderboard, value.data.onCreateUser] })),
+    });
+    this.subscription = subscription;
+  }
+
+  componentWillUnmount() {
+    this.subscription.unsubscribe();
   }
 
   uploadScore = async (score: int) => {
@@ -39,8 +49,6 @@ class App extends React.Component {
       const result = await API.graphql(
         graphqlOperation(createUser, { input: { userName: this.state.userName, value: score } })
       );
-      const leaderboard = await API.graphql(graphqlOperation(listUsers));
-      this.setState({ leaderboard: leaderboard.data.listUsers.items });
       console.log('success', result);
     } catch (error) {
       console.log('error');
