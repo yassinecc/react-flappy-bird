@@ -9,6 +9,11 @@
             "UnauthRoleName": "react-flappy-bird-dev-20190525105610-unauthRole",
             "StackName": "react-flappy-bird-dev-20190525105610",
             "StackId": "arn:aws:cloudformation:eu-central-1:492611505253:stack/react-flappy-bird-dev-20190525105610/f17fd110-7eca-11e9-8be3-0a0ca1a48442"
+        },
+        "categories": {
+            "auth": {
+                "reactflappybird94cd7195": {}
+            }
         }
     }
 }

@@ -10,16 +10,21 @@ import logyo from './components/logyo';
 import Game from './src/game';
 
 logyo('https://twitter.com/baconbrix');
-export default class App extends React.Component {
+
+import Amplify from 'aws-amplify';
+import config from './src/aws-exports';
+Amplify.configure(config);
+
+import { withAuthenticator } from 'aws-amplify-react';
+
+class App extends React.Component {
   state = {
     score: 0,
   };
   render() {
     const { style, ...props } = this.props;
     return (
-      <View
-        style={[{ width: '100vw', height: '100vh', overflow: 'hidden' }, style]}
-      >
+      <View style={[{ width: '100vw', height: '100vh', overflow: 'hidden' }, style]}>
         <DisableBodyScrollingView>
           <KeyboardControlsView
             onKeyDown={({ code }) => {
@@ -70,3 +75,5 @@ const Score = ({ children }) => (
     {children}
   </Text>
 );
+
+export default withAuthenticator(App, { includeGreetings: true });
