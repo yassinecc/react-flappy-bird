@@ -3,13 +3,8 @@ import * as React from 'react';
 import { Text, TouchableWithoutFeedback, View } from 'react-native';
 
 import DisableBodyScrollingView from './components/DisableBodyScrollingView';
-import ExpoButton from './components/ExpoButton';
-import GithubButton from './components/GithubButton';
 import KeyboardControlsView from './components/KeyboardControlsView';
-import logyo from './components/logyo';
 import Game from './src/game';
-
-logyo('https://twitter.com/baconbrix');
 
 import Amplify, { Auth, API, graphqlOperation } from 'aws-amplify';
 import config from './src/aws-exports';
@@ -86,24 +81,25 @@ class App extends React.Component {
             <Score>{this.state.score}</Score>
           </KeyboardControlsView>
         </DisableBodyScrollingView>
-        <ExpoButton />
-        <GithubButton />
       </View>
     );
   }
 }
 
+const getScores = scores =>
+  scores
+    .filter(score => score.value > 0)
+    .sort(
+      (score1, score2) =>
+        score1.value < score2.value ||
+        (score1.value === score2.value && score1.userName < score2.userName)
+    );
+
 const Leaderboard = ({ scores }) => (
   <View style={{ position: 'absolute', top: 0, left: 0, width: '50%', height: '100%' }}>
-    {scores
-      .sort(
-        (score1, score2) =>
-          score1.value < score2.value ||
-          (score1.value === score2.value && score1.userName < score2.userName)
-      )
-      .map(score => (
-        <ScoreLine key={`score-line-${score.id}`} name={score.userName} value={score.value} />
-      ))}
+    {getScores(scores).map(score => (
+      <ScoreLine key={`score-line-${score.id}`} name={score.userName} value={score.value} />
+    ))}
   </View>
 );
 
