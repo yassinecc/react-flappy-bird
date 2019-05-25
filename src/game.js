@@ -365,6 +365,7 @@ class Game {
   hitPipe = () => {
     this.bird.stop();
     this.isDead = true;
+    this.onGameEnd(this.score);
   };
 
   updateScore = () => {
