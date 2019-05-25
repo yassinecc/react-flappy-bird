@@ -13,5 +13,13 @@
 				"securityType": "API_KEY"
 			}
 		}
+	},
+	"function": {
+		"flappylambda": {
+			"service": "Lambda",
+			"providerPlugin": "awscloudformation",
+			"build": true,
+			"dependsOn": []
+		}
 	}
 }
